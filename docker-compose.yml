@@ -1,0 +1,32 @@
+version: "3.9"
+
+services:
+  frontend:
+    build: ./frontend
+    container_name: selenium_frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+    # IMPORTANTE: sin este volumen por ahora
+    # volumes:
+    #   - ./frontend:/app
+    command: ["npm", "run", "dev"]
+
+  selenium:
+    image: selenium/standalone-chrome:latest
+    container_name: selenium_chrome
+    ports:
+      - "4444:4444"
+      - "7900:7900"   # noVNC (vista del navegador)
+    shm_size: "2g"
+
+  scraper:
+    build: ./scraper
+    container_name: selenium_scraper
+    depends_on:
+      - selenium
+      - frontend
+    volumes:
+      - ./scraper:/app
+    command: ["tail", "-f", "/dev/null"]

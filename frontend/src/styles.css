@@ -1,0 +1,68 @@
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  background: #0f172a;
+  color: #f9fafb;
+}
+
+.app-header,
+.app-footer {
+  padding: 1rem 2rem;
+  background: #020617;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+main {
+  padding: 2rem;
+}
+
+button {
+  cursor: pointer;
+  padding: 0.4rem 0.8rem;
+  margin: 0.2rem;
+  border-radius: 0.4rem;
+  border: none;
+}
+
+.card {
+  background: #020617;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  max-width: 800px;
+  margin: 0 auto;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.widget {
+  margin-top: 1.5rem;
+}
+
+.alert {
+  margin-top: 1rem;
+  padding: 0.5rem 0.8rem;
+  border-radius: 0.5rem;
+}
+
+.alert.success {
+  background: #16a34a33;
+  border: 1px solid #16a34a;
+}
+
+.alert.error {
+  background: #dc262633;
+  border: 1px solid #dc2626;
+}
+
+input {
+  display: block;
+  width: 100%;
+  margin-top: 0.25rem;
+  margin-bottom: 0.75rem;
+  padding: 0.4rem;
+  border-radius: 0.4rem;
+  border: 1px solid #334155;
+  background: #020617;
+  color: #e5e7eb;
+}
