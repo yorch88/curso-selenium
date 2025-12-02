@@ -8,7 +8,7 @@ export default function DashboardPage() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setNotification("Mensaje cargado dinámicamente");
+      setNotification("Dashboard listo para usar");
     }, 3000);
 
     return () => clearTimeout(timer);

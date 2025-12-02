@@ -7,26 +7,28 @@ from selenium.webdriver.support import expected_conditions as EC
 
 
 def create_driver():
-  options = ChromeOptions()
-  #options.add_argument("--headless=new")
-  options.add_argument("--no-sandbox")
-  options.add_argument("--disable-dev-shm-usage")
+    options = ChromeOptions()
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
 
-  driver = webdriver.Remote(
-    command_executor="http://selenium:4444/wd/hub",
-    options=options,
-  )
-  driver.set_window_size(1280, 800)
-  return driver
+    driver = webdriver.Remote(
+        command_executor="http://selenium:4444/wd/hub",
+        options=options,
+    )
+    driver.set_window_size(1280, 800)
+    return driver
 
 
-def test_login_and_dashboard():
-  driver = create_driver()
+def go_to_frontend(driver):
+    driver.get("http://frontend:3000/")
+
+def test_login(driver):
+  
   wait = WebDriverWait(driver, 20)
 
   try:
     # 1) Ir al login de nuestro frontend
-    driver.get("http://frontend:3000/")
+    # driver.get("http://frontend:3000/")
     # ---- DEBUG AQUÍ ----
     # print("\n========== DEBUG DE PÁGINA ==========")
     # print("URL actual:", driver.current_url)
@@ -51,9 +53,20 @@ def test_login_and_dashboard():
     )
     print("Mensaje de login:", success.text)
 
-    # 3) Navegar al dashboard usando el botón del header
+    
+  finally:
+    pass
+
+
+def test_dashboard(driver):
+  wait = WebDriverWait(driver, 20)
+  
+  try:
     nav_dashboard = driver.find_element(By.ID, "nav-dashboard")
     nav_dashboard.click()
+    wait.until(EC.text_to_be_present_in_element(
+      (By.ID, "notification-text"), 
+      "Dashboard listo para usar"))
     sleep(2)
 
     # 4) Interactuar con el contador
@@ -65,6 +78,13 @@ def test_login_and_dashboard():
     sleep(2)
     btn_inc.click()
     sleep(2)
+    btn_dec = driver.find_element(By.ID, "counter-dec")
+    for _ in range(2):
+      btn_dec.click()
+      sleep(2)
+      if counter_value.text == "0":
+        btn_inc.click()
+        sleep(1)
     print("Valor del contador después de 2 clics:", counter_value.text)
 
     # 5) Capturar texto dinámico (notificación retardada)
@@ -83,8 +103,11 @@ def test_login_and_dashboard():
     print("Número de elementos en la lista:", len(items))
 
   finally:
-    driver.quit()
-
+    pass
 
 if __name__ == "__main__":
-  test_login_and_dashboard()
+  driver = create_driver()
+  go_to_frontend(driver)
+  test_login(driver)
+  test_dashboard(driver)
+  driver.quit()
